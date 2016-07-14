@@ -4,7 +4,7 @@ import { AppComponent } from './component/app.component';
 import { HTTP_PROVIDERS } from '@angular/http';
 import {enableProdMode} from '@angular/core';
 
-enableProdMode()
+// enableProdMode()
 bootstrap(AppComponent, 
          [
             HTTP_PROVIDERS

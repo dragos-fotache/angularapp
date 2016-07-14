@@ -9,7 +9,7 @@ import { Article } from '../model/article.model';
 @Injectable()
 export class ArticleService {
 
-    private url = 'http://192.168.35.135:8081/backend/articles';
+    private url = 'http://localhost:8081/backend/articles';
 
     constructor(private http: Http) {
     }

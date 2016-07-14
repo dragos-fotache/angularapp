@@ -11,12 +11,12 @@ import { LazyLoadEvent } from 'primeng/primeng';
 
 @Component({
     selector: 'article-table',
-    inputs: ['articles'],
+    inputs: ['articles', 'totalRecords'],
     outputs: ['onLazyLoadArticles'],
     template: `
         <p-dataTable [value]="articles" 
-                     selectionMode="multiple" 
-                     [(selection)]="selectedArticles" 
+                     selectionMode="single" 
+                     [(selection)]="selectedArticle" 
                      resizableColumns="true" 
                      [lazy]="true"
                      [totalRecords]="totalRecords"
@@ -32,9 +32,7 @@ import { LazyLoadEvent } from 'primeng/primeng';
             <p-column field="supplier" header="Supplier"></p-column>
             <p-column field="packing" header="Packing"></p-column>
             <footer> 
-                <ul>
-                    <li *ngFor="let article of selectedArticles" style="text-align: left">{{article.name}}</li>
-                </ul>
+                <div style="text-align: left">{{selectedArticle ? selectedArticle.id + ' ' + selectedArticle.name: 'none'}}</div>
             </footer>
         </p-dataTable>
     `,
@@ -44,11 +42,11 @@ export class ArticleTableComponent {
 
     onLazyLoadArticles: EventEmitter<LazyLoadEvent>;
 
-    totalRecords = 40;
-
-    selectedArticles: Article[];
+    totalRecords;
 
     articles: Article[];
+
+    selectedArticle: Article;
 
     cols = [
         {field: 'id', header: '#'},
@@ -63,8 +61,8 @@ export class ArticleTableComponent {
     }
 
     loadCarsLazy(event: LazyLoadEvent) {
+        this.selectedArticle = undefined;
         this.onLazyLoadArticles.emit(event);
-        this.selectedArticles = [];
     }
 
 }
