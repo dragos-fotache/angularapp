@@ -25,7 +25,7 @@ import { Article } from '../model/article.model';
     providers: [ArticleService]
 })
 export class AppComponent 
-// implements OnInit 
+
 { 
     sliceAndCount = {
         articles: [],
