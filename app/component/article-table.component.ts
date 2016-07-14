@@ -12,11 +12,12 @@ import { LazyLoadEvent } from 'primeng/primeng';
 @Component({
     selector: 'article-table',
     inputs: ['articles', 'totalRecords'],
-    outputs: ['onLazyLoadArticles'],
+    outputs: ['onLazyLoadArticles', 'onRowSelectEmitter'],
     template: `
         <p-dataTable [value]="articles" 
                      selectionMode="single" 
                      [(selection)]="selectedArticle" 
+                     (onRowSelect)="onRowSelect($event)"
                      resizableColumns="true" 
                      [lazy]="true"
                      [totalRecords]="totalRecords"
@@ -41,6 +42,7 @@ import { LazyLoadEvent } from 'primeng/primeng';
 export class ArticleTableComponent {
 
     onLazyLoadArticles: EventEmitter<LazyLoadEvent>;
+    onRowSelectEmitter: EventEmitter<Article>;
 
     totalRecords;
 
@@ -48,21 +50,18 @@ export class ArticleTableComponent {
 
     selectedArticle: Article;
 
-    cols = [
-        {field: 'id', header: '#'},
-        {field: 'pzn', header: 'PZN'},
-        {field: 'name', header: 'Name'},
-        {field: 'supplier', header: 'Supplier'},
-        {field: 'packing', header: 'Packing'}
-    ];
-
     constructor() {
         this.onLazyLoadArticles = new EventEmitter();
+        this.onRowSelectEmitter = new EventEmitter<Article>();
     }
 
     loadCarsLazy(event: LazyLoadEvent) {
         this.selectedArticle = undefined;
         this.onLazyLoadArticles.emit(event);
+    }
+
+    onRowSelect(event) {
+        this.onRowSelectEmitter.emit(event.data);
     }
 
 }
