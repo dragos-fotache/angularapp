@@ -15,7 +15,8 @@ import { Article } from '../model/article.model';
     template: `
         <div class="container">
             <article-table 
-                [articles]="articles"
+                [articles]="sliceAndCount.articles"
+                [totalRecords]="sliceAndCount.count"
                 (onLazyLoadArticles)="lazyLoadArticles($event)">
             </article-table>
         </div>
@@ -26,19 +27,18 @@ import { Article } from '../model/article.model';
 export class AppComponent 
 // implements OnInit 
 { 
-
-    articles: Article[];
+    sliceAndCount = {
+        articles: [],
+        count: 0
+    };
 
     constructor(private articleService: ArticleService) { 
     }
 
-    // ngOnInit() {
-    //     this.articleService.getArticles().then(articles => this.articles = articles);
-    // }
-
     lazyLoadArticles(event: LazyLoadEvent) {
         console.log(event.first, event.rows, event.sortField, event.sortOrder);
-        this.articleService.getArticlesSlice(event.first, event.rows, event.sortField, event.sortOrder).then(articles => this.articles = articles);
+        this.articleService.getArticlesSlice(event.first, event.rows, event.sortField, event.sortOrder)
+                        .then(sliceAndCount => this.sliceAndCount = sliceAndCount);
     }
 
 }
