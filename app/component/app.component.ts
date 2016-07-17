@@ -10,6 +10,7 @@ import { Button } from 'primeng/primeng'
 import { DataTable } from 'primeng/primeng';
 
 import { ArticleTableComponent } from './article-table.component';
+import { LButtonComponent } from './l-button.component';
 
 import { ArticleService } from '../service/article.service';
 import { Article } from '../model/article.model';
@@ -20,35 +21,48 @@ import { Article } from '../model/article.model';
     selector: 'app',
     template: `
         <div class="container">
-            <div class="ui-widget ui-widget-content">
-                <div class="ui-g">
-                    <div class="ui-g-1">Name:</div>
-                    <div class="ui-g-3">{{selectedArticle ? selectedArticle.name : ""}}</div>
-                    <div class="ui-g-1">Provider:</div>
-                    <div class="ui-g-2">{{selectedArticle ? selectedArticle.provider : ""}}</div>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-10 ui-g-nopad">
+                    <div class="ui-widget ui-widget-content">
+                        <div class="ui-g">
+                            <div class="ui-g-1">Name:</div>
+                            <div class="ui-g-3">{{selectedArticle ? selectedArticle.name : ""}}</div>
+                            <div class="ui-g-1">Provider:</div>
+                            <div class="ui-g-2">{{selectedArticle ? selectedArticle.provider : ""}}</div>
+                        </div>
+                        <div class="ui-g">
+                            <div class="ui-g-1">PZN:</div>
+                            <div class="ui-g-3">{{selectedArticle ? selectedArticle.pzn : ""}}</div>
+                            <div class="ui-g-1">Packaging:</div>
+                            <div class="ui-g-2">{{selectedArticle ? selectedArticle.packaging : ""}}</div>
+                        </div>
+                    </div>
+                    <article-table 
+                        #tab
+                        [articles]="sliceAndCount.articles"
+                        [totalRecords]="sliceAndCount.count"
+                        (onLazyLoadArticles)="lazyLoadArticles($event)"
+                        (onRowSelectEmitter)="setSelectedArticle($event)">
+                    </article-table>
+                    <div class="ui-widget ui-widget-header" style="padding: 10px 10px">
+                        <form (ngSubmit)="onClickSearch()">
+                            <label for="searchField">Search:  </label>
+                            <input type="text" pInputText id="searchField" [(ngModel)]="searchTextModel"/>
+                            <button pButton type="submit" label="Search"></button>
+                        </form>
+                    </div>
                 </div>
-                <div class="ui-g">
-                    <div class="ui-g-1">PZN:</div>
-                    <div class="ui-g-3">{{selectedArticle ? selectedArticle.pzn : ""}}</div>
-                    <div class="ui-g-1">Packaging:</div>
-                    <div class="ui-g-2">{{selectedArticle ? selectedArticle.packaging : ""}}</div>
+                <div class="ui-g-12 ui-md-2 ui-widget ui-widget-header ui-g-nopad">
+                    <div style="margin-bottom:2em">Menu</div>
+                    <div style="margin-left:5px">
+                        <l-button [label]="'New'" [icon]="'fa-file-o'" (onClick)="onLButtonClicked1()"></l-button>
+                        <l-button [inverted]="true" [icon]="'fa-edit'" [label]="'Edit'" (onClick)="onLButtonClicked2()" style="position: relative;left: 65px;top: -60px"></l-button>
+                    </div>
                 </div>
-            </div>
-            <article-table 
-                #tab
-                [articles]="sliceAndCount.articles"
-                [totalRecords]="sliceAndCount.count"
-                (onLazyLoadArticles)="lazyLoadArticles($event)"
-                (onRowSelectEmitter)="setSelectedArticle($event)">
-            </article-table>
-            <div class="ui-widget ui-widget-header" style="padding: 10px 10px">
-                <label for="searchField">Search:  </label>
-                <input type="text" pInputText id="searchField" [(ngModel)]="searchTextModel"/>
-                <button pButton type="button" (click)="onClickSearch()" label="Search"></button>
             </div>
         </div>
               `,
-    directives: [ArticleTableComponent, InputText, Button], 
+    directives: [ArticleTableComponent, InputText, Button, LButtonComponent], 
     providers: [ArticleService]
 })
 export class AppComponent 
@@ -85,6 +99,14 @@ export class AppComponent
         this.searchText = this.searchTextModel;
         this.tab.resetPaginator();
         return false;
+    }
+
+    onLButtonClicked1() {
+        console.log("L-Button1 clicked!");
+    }
+
+    onLButtonClicked2() {
+        console.log("L-Button2 clicked!");
     }
 
 }

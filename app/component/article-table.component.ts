@@ -28,21 +28,21 @@ import { Paginator } from 'primeng/primeng';
                      (onLazyLoad)="loadArticlesLazy($event)"
                      [rows]="rows" >
             <header>Article table</header>
-            <p-column field="id" header="id" [sortable]="true"></p-column>
-            <p-column field="pzn" header="PZN" [sortable]="true"></p-column>
-            <p-column field="name" header="Name" [sortable]="true"></p-column>
-            <p-column field="provider" header="Supplier"></p-column>
-            <p-column field="dosage" header="Dosage"></p-column>
-            <p-column field="packaging" header="Packaging"></p-column>
-            <p-column field="sellingPrice" header="SPrice"></p-column>
-            <p-column field="purchasingPrice" header="PPrice"></p-column>
-            <p-column field="narcotic" header="Narcotic">
+            <p-column field="id" header="id" [sortable]="true" [style]="{'width':'3em'}"></p-column>
+            <p-column field="pzn" header="PZN" [sortable]="true" [style]="{'width':'5em'}"></p-column>
+            <p-column field="name" header="Name" [sortable]="true" [style]="{'width':'20em'}"></p-column>
+            <p-column field="provider" header="Supplier" [style]="{'width':'15em'}"></p-column>
+            <p-column field="dosage" header="Dosage" [style]="{'width':'4em'}"></p-column>
+            <p-column field="packaging" header="Packaging" [style]="{'width':'5em'}"></p-column>
+            <p-column field="sellingPrice" header="SPrice" [style]="{'width':'4em'}"></p-column>
+            <p-column field="purchasingPrice" header="PPrice" [style]="{'width':'4em'}"></p-column>
+            <p-column field="narcotic" header="BTM" [style]="{'width':'4em'}">
                 <template let-article="rowData">
                     <i *ngIf="article.narcotic == false" class="fa fa-check" style="color:blue"></i>
                     <i *ngIf="article.narcotic == true" class="fa fa-ban" style="color:red"></i>
                 </template>
             </p-column>
-            <p-column field="stock" header="Stock">
+            <p-column field="stock" header="Stock" [style]="{'width':'4em'}">
                 <template let-article="rowData">
                     <div *ngIf="article.stock == 0">{{article.stock}}</div>
                     <div *ngIf="article.stock > 0" style="background-color:green">{{article.stock}}</div>
