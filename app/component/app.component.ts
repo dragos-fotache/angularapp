@@ -53,10 +53,10 @@ import { Article } from '../model/article.model';
                     </div>
                 </div>
                 <div class="ui-g-12 ui-md-2 ui-widget ui-widget-header ui-g-nopad">
-                    <div style="margin-bottom:2em">Menu</div>
+                    <div style="margin-left:5px; margin-bottom:2em; margin-top:5px">Menu</div>
                     <div style="margin-left:5px">
                         <l-button [label]="'New'" [icon]="'fa-file-o'" (onClick)="onLButtonClicked1()"></l-button>
-                        <l-button [inverted]="true" [icon]="'fa-edit'" [label]="'Edit'" (onClick)="onLButtonClicked2()" style="position: relative;left: 65px;top: -60px"></l-button>
+                        <l-button [inverted]="true" [icon]="'fa-edit'" [label]="'Edit'" (onClick)="onLButtonClicked2()" style="position: relative;left: 20%"></l-button>
                     </div>
                 </div>
             </div>
