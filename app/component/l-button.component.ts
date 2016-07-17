@@ -12,6 +12,7 @@ import { EventEmitter } from '@angular/core';
             <div *ngIf="!inverted" 
                  id="square-left" 
                  class="ui-button ui-widget ui-state-default ui-button-text-only" 
+                 [class.ui-button-green]="green"
                  [class.ui-state-hover]="hover" 
                  (mouseenter)="onMouseenter($event)"
                  (mouseleave)="onMouseleave($event)"
@@ -21,6 +22,7 @@ import { EventEmitter } from '@angular/core';
             <div *ngIf="!inverted" 
                  id="rectangle-right" 
                  class="ui-button ui-widget ui-state-default ui-button-text-only"
+                 [class.ui-button-green]="green"
                  [class.ui-state-hover]="hover" 
                  (mouseenter)="onMouseenter($event)"
                  (mouseleave)="onMouseleave($event)"
@@ -31,6 +33,7 @@ import { EventEmitter } from '@angular/core';
             <div *ngIf="inverted" 
                  id="rectangle-left" 
                  class="ui-button ui-widget ui-state-default ui-button-text-only"
+                 [class.ui-button-green]="green"
                  [class.ui-state-hover]="hover" 
                  (mouseenter)="onMouseenter($event)"
                  (mouseleave)="onMouseleave($event)"
@@ -40,6 +43,7 @@ import { EventEmitter } from '@angular/core';
             <div *ngIf="inverted" 
                  id="square-right" 
                  class="ui-button ui-widget ui-state-default ui-button-text-only"
+                 [class.ui-button-green]="green"
                  [class.ui-state-hover]="hover" 
                  (mouseenter)="onMouseenter($event)"
                  (mouseleave)="onMouseleave($event)"
@@ -59,6 +63,9 @@ export class LButtonComponent {
 
     @Input()
     icon: String;
+
+    @Input()
+    green: boolean = false;
 
     private hover: boolean;
 

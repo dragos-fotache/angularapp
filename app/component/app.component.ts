@@ -58,6 +58,10 @@ import { Article } from '../model/article.model';
                         <l-button [label]="'New'" [icon]="'fa-file-o'" (onClick)="onLButtonClicked1()"></l-button>
                         <l-button [inverted]="true" [icon]="'fa-edit'" [label]="'Edit'" (onClick)="onLButtonClicked2()" style="position: relative;left: 20%"></l-button>
                     </div>
+                    <div style="margin-left:5px;position:relative;top:70px">
+                        <l-button [label]="'Duplicate'" [icon]="'fa-copy'" [green]="true" (onClick)="onLButtonClicked1()"></l-button>
+                        <l-button [label]="'Delete'" [icon]="'fa-eraser'" [inverted]="true" [green]="true" (onClick)="onLButtonClicked2()" style="position: relative;left: 20%"></l-button>
+                    </div>
                 </div>
             </div>
         </div>
