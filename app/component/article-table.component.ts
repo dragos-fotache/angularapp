@@ -28,7 +28,7 @@ import { Paginator } from 'primeng/primeng';
                      (onLazyLoad)="loadArticlesLazy($event)"
                      [rows]="rows" >
             <header>Article table</header>
-            <p-column field="id" header="id" [sortable]="true" [style]="{'width':'3em'}"></p-column>
+            <p-column field="id" header="id" [sortable]="true" [style]="{'width':'3.5em'}"></p-column>
             <p-column field="pzn" header="PZN" [sortable]="true" [style]="{'width':'5em'}"></p-column>
             <p-column field="name" header="Name" [sortable]="true" [style]="{'width':'20em'}"></p-column>
             <p-column field="provider" header="Supplier" [style]="{'width':'15em'}"></p-column>
@@ -55,7 +55,7 @@ import { Paginator } from 'primeng/primeng';
                      [pageLinkSize]="3" 
                      styleClass="ui-paginator-bottom"
                      (onPageChange)="paginate($event)" 
-                     [rowsPerPageOptions]="[5,10,20]">
+                     [rowsPerPageOptions]="[5,10,50,100,500,1000]">
         </p-paginator>
     `,
     directives: [DataTable, Column, Header, Footer, Paginator]
@@ -83,6 +83,10 @@ export class ArticleTableComponent {
 
     resetPaginator() {
         this.pag.changePageToFirst();
+    }
+
+    reloadPaginator() {
+        this.pag.changePage(this.pag.getPage());
     }
 
     loadArticlesLazy(event: LazyLoadEvent) {

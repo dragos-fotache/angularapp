@@ -13,17 +13,19 @@ import { EventEmitter } from '@angular/core';
                  id="square-left" 
                  class="ui-button ui-widget ui-state-default ui-button-text-only" 
                  [class.ui-button-green]="green"
-                 [class.ui-state-hover]="hover" 
+                 [class.ui-state-hover]="hover && !disabled"  
+                 [class.ui-state-disabled]="disabled"
                  (mouseenter)="onMouseenter($event)"
                  (mouseleave)="onMouseleave($event)"
                  (click)="buttonClicked($event)">
-                 <i [class]="'fa fa-2x ' + icon" style="padding-top: 15px"></i>
+                 <i [class]="'fa fa-2x ' + icon" style="padding-top: 0.5em"></i>
             </div>
             <div *ngIf="!inverted" 
                  id="rectangle-right" 
                  class="ui-button ui-widget ui-state-default ui-button-text-only"
                  [class.ui-button-green]="green"
-                 [class.ui-state-hover]="hover" 
+                 [class.ui-state-hover]="hover && !disabled"  
+                 [class.ui-state-disabled]="disabled"
                  (mouseenter)="onMouseenter($event)"
                  (mouseleave)="onMouseleave($event)"
                  (click)="buttonClicked($event)">
@@ -34,7 +36,8 @@ import { EventEmitter } from '@angular/core';
                  id="rectangle-left" 
                  class="ui-button ui-widget ui-state-default ui-button-text-only"
                  [class.ui-button-green]="green"
-                 [class.ui-state-hover]="hover" 
+                 [class.ui-state-hover]="hover && !disabled" 
+                 [class.ui-state-disabled]="disabled"
                  (mouseenter)="onMouseenter($event)"
                  (mouseleave)="onMouseleave($event)"
                  (click)="buttonClicked($event)">
@@ -44,11 +47,12 @@ import { EventEmitter } from '@angular/core';
                  id="square-right" 
                  class="ui-button ui-widget ui-state-default ui-button-text-only"
                  [class.ui-button-green]="green"
-                 [class.ui-state-hover]="hover" 
+                 [class.ui-state-hover]="hover && !disabled"  
+                 [class.ui-state-disabled]="disabled"
                  (mouseenter)="onMouseenter($event)"
                  (mouseleave)="onMouseleave($event)"
                  (click)="buttonClicked($event)">
-                 <i [class]="'fa fa-2x ' + icon" style="padding-top: 15px"></i>
+                 <i [class]="'fa fa-2x ' + icon" style="padding-top: 0.5em"></i>
             </div>
 
         </div>
@@ -66,6 +70,9 @@ export class LButtonComponent {
 
     @Input()
     green: boolean = false;
+
+    @Input()
+    disabled: boolean = false;
 
     private hover: boolean;
 
