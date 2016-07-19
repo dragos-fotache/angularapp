@@ -12,13 +12,15 @@ import { Base64 } from "../util/base64";
 @Injectable()
 export class ArticleService {
 
-    private url = 'http://192.168.35.90:8081/backend/articles';
-    private newurl = 'http://192.168.35.90:8081/backend/articles/new';
-    private updateurl = 'http://192.168.35.90:8081/backend/articles/update';
-    private deleteurl = 'http://192.168.35.90:8081/backend/articles/delete';
-    private testurl = "http://192.168.35.90:8081/backend/articles/test";
-    private loginurl = "http://192.168.35.90:8081/backend/articles/login";
-    private logouturl = "http://192.168.35.90:8081/backend/articles/logout";
+    // private path = 'http://192.168.35.90:8081/backend/articles';
+    private path = 'http://localhost:8081/backend/articles';
+
+    private newurl = this.path + '/new';
+    private updateurl = this.path + '/update';
+    private deleteurl = this.path + '/delete';
+    private testurl = this.path + '/test';
+    private loginurl = this.path + '/login';
+    private logouturl = this.path + '/logout';
 
     constructor(private http: Http) {
     }
@@ -27,7 +29,7 @@ export class ArticleService {
         
         let options = new RequestOptions({ withCredentials: true });
 
-        return this.http.get(this.url, options)
+        return this.http.get(this.path, options)
             .toPromise()
             .then(response => response.json())
             .catch(this.handleError);
@@ -39,10 +41,10 @@ export class ArticleService {
 
         let options = new RequestOptions({ withCredentials: true });
 
-        return this.http.get(this.url + '/' + first + '/' + rows + '/' + sortField + '/' + order + '/' + searchString, options)
+        return this.http.get(this.path + '/' + first + '/' + rows + '/' + sortField + '/' + order + '/' + searchString, options)
             .toPromise()
-            .then(response => response.json())
-            .catch(this.handleError);
+            .then(response => response)
+            .catch(response => response);
     }
 
     newArticle(article: Article) {
@@ -52,7 +54,8 @@ export class ArticleService {
 
         return this.http.post(this.newurl, article, options)
                         .toPromise()
-                        .catch(this.handleError);
+                        .then(response => response)
+                        .catch(response => response);
 
     }
 
@@ -63,7 +66,8 @@ export class ArticleService {
 
         return this.http.post(this.updateurl, article, options)
                         .toPromise()
-                        .catch(this.handleError);
+                        .then(response => response)
+                        .catch(response => response);
 
     }
 
@@ -95,8 +99,8 @@ export class ArticleService {
 
         return this.http.get(this.loginurl, options)
                         .toPromise()
-                        .then(response => response.status)
-                        .catch(response => response.status);
+                        .then(response => response)
+                        .catch(response => response);
     }
 
     logout() {

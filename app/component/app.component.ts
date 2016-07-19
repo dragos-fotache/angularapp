@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { ViewChild } from '@angular/core';
+import { Response } from '@angular/http';
 
 import { LazyLoadEvent } from 'primeng/primeng';
 import { DataGrid } from 'primeng/primeng';
@@ -62,13 +63,14 @@ import { Article } from '../model/article.model';
                 </div>
                 <div class="ui-g-12 ui-md-2 ui-widget ui-widget-header ui-g-nopad">
                     <div style="margin-left:5px; margin-bottom:2em; margin-top:5px">Menu</div>
-                    <div style="margin-left:5px">
-                        <l-button [label]="'New'" [icon]="'fa-file-o'" [green]="true" (onClick)="showNewDialog()"></l-button>
-                        <l-button [inverted]="true" [icon]="'fa-edit'" [green]="true" [label]="'Edit'" (onClick)="showEditDialog()" style="position: relative;left: 20%"></l-button>
+                    <div style="margin-bottom: 0.5em">
+                        <button type="button" pButton label="New" icon="fa-file-o" (click)="showNewDialog()"></button>
                     </div>
-                    <div style="margin-left:5px;position:relative;top:4.3em">
-                        <l-button [label]="'Duplicate'" [icon]="'fa-copy'" [disabled]="true" (onClick)="onLButtonClicked1()"></l-button>
-                        <l-button [label]="'Delete'" [icon]="'fa-eraser'" [inverted]="true" (onClick)="delete()" style="position: relative;left: 20%"></l-button>
+                    <div style="margin-bottom: 0.5em">
+                        <button type="button" pButton label="Edit" icon="fa-edit" (click)="showEditDialog()"></button>
+                    </div>
+                    <div style="margin-bottom: 0.5em"> 
+                        <button type="button" pButton label="Delete" icon="fa-eraser" (click)="delete()"></button>
                     </div>
                 </div>
             </div>
@@ -133,7 +135,7 @@ import { Article } from '../model/article.model';
             </p-dialog>
         </div>
               `,
-    directives: [ArticleTableComponent, InputText, Button, LButtonComponent, Dialog], 
+    directives: [ArticleTableComponent, InputText, Button, Dialog], 
     providers: [ArticleService]
 })
 export class AppComponent implements OnInit { 
@@ -152,7 +154,7 @@ export class AppComponent implements OnInit {
     user: String;
     password: String;
     loginHeader = "Login";
-    wasBadLogin: Boolean;
+    wasBadLogin: Boolean = false;
 
     searchTextModel: String;
     searchText: String;
@@ -165,12 +167,6 @@ export class AppComponent implements OnInit {
         this.onSearch = new EventEmitter();
     }
 
-    lazyLoadArticles(event: LazyLoadEvent) {
-        this.selectedArticle = undefined;
-        this.articleService.getArticlesSlice(event.first, event.rows, event.sortField, event.sortOrder, this.searchText)
-                        .then(sliceAndCount => this.sliceAndCount = sliceAndCount);
-    }
-
     setSelectedArticle(article) {
         this.selectedArticle = article;
     }
@@ -179,14 +175,6 @@ export class AppComponent implements OnInit {
         this.searchText = this.searchTextModel;
         this.tab.resetPaginator();
         return false;
-    }
-
-    onLButtonClicked1() {
-        console.log("L-Button1 clicked!");
-    }
-
-    onLButtonClicked2() {
-        console.log("L-Button2 clicked!");
     }
 
     showNewDialog() {
@@ -210,11 +198,23 @@ export class AppComponent implements OnInit {
         return article;
     }
 
+    lazyLoadArticles(event: LazyLoadEvent) {
+        this.selectedArticle = undefined;
+        this.articleService.getArticlesSlice(event.first, event.rows, event.sortField, event.sortOrder, this.searchText)
+                        .then(response => {
+                                    if (response.status == 200) {
+                                        this.sliceAndCount = response.json()
+                                    } else if (response.status == 401) {
+                                        this.loggedIn = false;
+                                    }
+                                });
+    }
+
     save() {
         if (this.isNewArticle) {
-            this.articleService.newArticle(this.article).then(e => this.tab.reloadPaginator());
+            this.articleService.newArticle(this.article).then(handleResponse(this));
         } else {
-            this.articleService.updateArticle(this.article).then(e => this.tab.reloadPaginator());
+            this.articleService.updateArticle(this.article).then(handleResponse(this));
         }
         this.article = null;
         this.isNewArticle = false;
@@ -225,18 +225,11 @@ export class AppComponent implements OnInit {
     delete() {
         if (this.selectedArticle) {
             this.articleService.deleteArticle(this.selectedArticle.id).
-                                then(response => {
-                                         if (response.status == 200) {
-                                             this.tab.reloadPaginator();
-                                         } else  {
-                                             this.loggedIn = false;
-                                         }
-                                     });
+                            then(handleResponse(this));
         }
     }
 
     ngOnInit() {
-        this.articleService.testLogin().then(status => this.loggedIn = status == 200 ? true : false);
     }
 
     testLogin() {
@@ -244,21 +237,36 @@ export class AppComponent implements OnInit {
     }
 
     login() {
-        this.articleService.login(this.user, this.password).then(status => { 
-                                                                    if (status == 200) {
-                                                                        console.log("Logged in!");
-                                                                        this.loggedIn = true;
-                                                                        this.wasBadLogin = false;
-                                                                        this.tab.resetPaginator();
-                                                                    } else {
-                                                                        this.loggedIn = false;
-                                                                        this.wasBadLogin = true;
-                                                                    }
-                                                                });
+        this.articleService.login(this.user, this.password).then(handleLoginResponse(this));
     }
 
     logout() {
-        this.articleService.logout().then(response => response.status == 200 ? this.loggedIn = false : this.loggedIn = true);
+        this.articleService.logout().then(response => this.loggedIn = response.status == 200 ? false : this.loggedIn);
     }
 
+    
+
+}
+
+function handleResponse(comp: AppComponent) {
+    return function(response) {
+        if (response.status == 200) {
+            comp.tab.reloadPaginator();
+        } else if (response.status == 401) {
+            comp.loggedIn = false;
+        }
+    }
+}
+
+function handleLoginResponse(comp: AppComponent) {
+    return function(response) {
+        if (response.status == 200) {
+            comp.loggedIn = true;
+            comp.wasBadLogin = false;
+            comp.tab.resetPaginator();
+        } else {
+            comp.loggedIn = false;
+            comp.wasBadLogin = true;
+        }
+    }
 }
