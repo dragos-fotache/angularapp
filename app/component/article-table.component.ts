@@ -55,7 +55,7 @@ import { Paginator } from 'primeng/primeng';
                      [pageLinkSize]="3" 
                      styleClass="ui-paginator-bottom"
                      (onPageChange)="paginate($event)" 
-                     [rowsPerPageOptions]="[5,10,50,100,500,1000]">
+                     [rowsPerPageOptions]="[5,10,20,50,100,500,1000]">
         </p-paginator>
     `,
     directives: [DataTable, Column, Header, Footer, Paginator]

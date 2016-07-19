@@ -46,11 +46,18 @@ import { Article } from '../model/article.model';
                         (onRowSelectEmitter)="setSelectedArticle($event)">
                     </article-table>
                     <div class="ui-widget ui-widget-header" style="padding: 10px 10px">
-                        <form (ngSubmit)="onClickSearch()" style="margin-bottom: 0em;">
-                            <label for="searchField">Search:  </label>
-                            <input type="text" pInputText id="searchField" [(ngModel)]="searchTextModel"/>
-                            <button pButton type="submit" label="Search"></button>
-                        </form>
+                        <div class="ui-g">
+                            <div class="ui-g-9">
+                                <form (ngSubmit)="onClickSearch()" style="margin-bottom: 0em;">
+                                    <label for="searchField">Search:  </label>
+                                    <input type="text" pInputText id="searchField" [(ngModel)]="searchTextModel"/>
+                                    <button pButton type="submit" label="Search"></button>
+                                </form>
+                            </div>
+                            <div class="ui-g-3">
+                                <button pButton type="button" label="Logout" (click)="logout()" style="float:right"></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="ui-g-12 ui-md-2 ui-widget ui-widget-header ui-g-nopad">
@@ -65,46 +72,71 @@ import { Article } from '../model/article.model';
                     </div>
                 </div>
             </div>
+            <p-dialog header="Article details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+                <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="article">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-5"><label for="PZN">PZN</label></div>
+                        <div class="ui-grid-col-8"><input pInputText id="PZN" [(ngModel)]="article.pzn" /></div>
+                    </div>
+                    <br />
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-5"><label for="name">Name</label></div>
+                        <div class="ui-grid-col-8"><input pInputText id="name" [(ngModel)]="article.name" /></div>
+                    </div>
+                    <br />
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-5"><label for="provider">Supplier</label></div>
+                        <div class="ui-grid-col-8"><input pInputText id="provider" [(ngModel)]="article.provider" /></div>
+                    </div>
+                    <br />
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-5"><label for="dosage">Dosage</label></div>
+                        <div class="ui-grid-col-8"><input pInputText id="dosage" [(ngModel)]="article.dosage" /></div>
+                    </div>
+                    <br />
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-5"><label for="packaging">Packaging</label></div>
+                        <div class="ui-grid-col-8"><input pInputText id="packaging" [(ngModel)]="article.packaging" /></div>
+                    </div>
+                </div>
+                <footer>
+                    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                        <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+                    </div>
+                </footer>
+            </p-dialog>
+            <p-dialog [header]="wasBadLogin ? 'Bad login!' : 'Login'" showEffect="fade" [responsive]="true" [modal]="true" [(visible)]="!loggedIn" >
+                <div class="ui-grid ui-grid-responsive ui-fluid">
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-5">
+                            <label for="user">User</label>
+                        </div>
+                        <div class="ui-grid-col-7">
+                            <input pInputText id="user" [(ngModel)]="user" />
+                        </div>
+                    </div>
+                    <br />
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-col-5">
+                            <label for="password">Password</label>
+                        </div>
+                        <div class="ui-grid-col-7">
+                            <input pInputText id="password" [(ngModel)]="password" />
+                        </div>
+                    </div>
+                </div>
+                <footer>
+                    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                        <button type="button" pButton icon="fa-check" (click)="login()" label="OK"></button>
+                    </div>
+                </footer>
+            </p-dialog>
         </div>
-        <p-dialog header="Article details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
-            <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="article">
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-5"><label for="PZN">PZN</label></div>
-                    <div class="ui-grid-col-8"><input pInputText id="PZN" [(ngModel)]="article.pzn" /></div>
-                </div>
-                <br />
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-5"><label for="name">Name</label></div>
-                    <div class="ui-grid-col-8"><input pInputText id="name" [(ngModel)]="article.name" /></div>
-                </div>
-                <br />
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-5"><label for="provider">Supplier</label></div>
-                    <div class="ui-grid-col-8"><input pInputText id="provider" [(ngModel)]="article.provider" /></div>
-                </div>
-                <br />
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-5"><label for="dosage">Dosage</label></div>
-                    <div class="ui-grid-col-8"><input pInputText id="dosage" [(ngModel)]="article.dosage" /></div>
-                </div>
-                <br />
-                <div class="ui-grid-row">
-                    <div class="ui-grid-col-5"><label for="packaging">Packaging</label></div>
-                    <div class="ui-grid-col-8"><input pInputText id="packaging" [(ngModel)]="article.packaging" /></div>
-                </div>
-            </div>
-            <footer>
-                <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                    <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
-                </div>
-            </footer>
-        </p-dialog>
               `,
     directives: [ArticleTableComponent, InputText, Button, LButtonComponent, Dialog], 
     providers: [ArticleService]
 })
-export class AppComponent 
-{ 
+export class AppComponent implements OnInit { 
     @ViewChild('tab') tab: ArticleTableComponent;
 
     sliceAndCount = {
@@ -115,6 +147,12 @@ export class AppComponent
     displayDialog: Boolean = false;
     article: Article;
     isNewArticle: Boolean = false;
+
+    loggedIn: Boolean = true;
+    user: String;
+    password: String;
+    loginHeader = "Login";
+    wasBadLogin: Boolean;
 
     searchTextModel: String;
     searchText: String;
@@ -186,8 +224,41 @@ export class AppComponent
 
     delete() {
         if (this.selectedArticle) {
-            this.articleService.deleteArticle(this.selectedArticle.id).then(e => this.tab.reloadPaginator());
+            this.articleService.deleteArticle(this.selectedArticle.id).
+                                then(response => {
+                                         if (response.status == 200) {
+                                             this.tab.reloadPaginator();
+                                         } else  {
+                                             this.loggedIn = false;
+                                         }
+                                     });
         }
+    }
+
+    ngOnInit() {
+        this.articleService.testLogin().then(status => this.loggedIn = status == 200 ? true : false);
+    }
+
+    testLogin() {
+        this.articleService.testLogin().then(status => this.loggedIn = status == 200 ? true : false);
+    }
+
+    login() {
+        this.articleService.login(this.user, this.password).then(status => { 
+                                                                    if (status == 200) {
+                                                                        console.log("Logged in!");
+                                                                        this.loggedIn = true;
+                                                                        this.wasBadLogin = false;
+                                                                        this.tab.resetPaginator();
+                                                                    } else {
+                                                                        this.loggedIn = false;
+                                                                        this.wasBadLogin = true;
+                                                                    }
+                                                                });
+    }
+
+    logout() {
+        this.articleService.logout().then(response => response.status == 200 ? this.loggedIn = false : this.loggedIn = true);
     }
 
 }
