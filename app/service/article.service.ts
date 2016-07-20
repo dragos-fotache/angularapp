@@ -12,8 +12,8 @@ import { Base64 } from "../util/base64";
 @Injectable()
 export class ArticleService {
 
-    // private path = 'http://192.168.35.90:8081/backend/articles';
-    private path = 'http://localhost:8081/backend/articles';
+    private path = 'http://192.168.35.107:8081/backend/articles';
+    //private path = 'http://localhost:8081/backend/articles';
 
     private newurl = this.path + '/new';
     private updateurl = this.path + '/update';

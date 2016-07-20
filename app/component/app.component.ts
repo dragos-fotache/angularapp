@@ -108,30 +108,32 @@ import { Article } from '../model/article.model';
                 </footer>
             </p-dialog>
             <p-dialog [header]="wasBadLogin ? 'Bad login!' : 'Login'" showEffect="fade" [responsive]="true" [modal]="true" [(visible)]="!loggedIn" >
-                <div class="ui-grid ui-grid-responsive ui-fluid">
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-5">
-                            <label for="user">User</label>
+                <form (ngSubmit)="login()" style="margin-bottom: 0em;">
+                    <div class="ui-grid ui-grid-responsive ui-fluid">
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-5">
+                                <label for="user">User</label>
+                            </div>
+                            <div class="ui-grid-col-7">
+                                <input pInputText id="user" [(ngModel)]="user" />
+                            </div>
                         </div>
-                        <div class="ui-grid-col-7">
-                            <input pInputText id="user" [(ngModel)]="user" />
+                        <br />
+                        <div class="ui-grid-row">
+                            <div class="ui-grid-col-5">
+                                <label for="password">Password</label>
+                            </div>
+                            <div class="ui-grid-col-7">
+                                <input pInputText id="password" type="password" [(ngModel)]="password" />
+                            </div>
                         </div>
                     </div>
-                    <br />
-                    <div class="ui-grid-row">
-                        <div class="ui-grid-col-5">
-                            <label for="password">Password</label>
+                    <footer>
+                        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+                            <button type="submit" pButton icon="fa-check" label="OK"></button>
                         </div>
-                        <div class="ui-grid-col-7">
-                            <input pInputText id="password" [(ngModel)]="password" />
-                        </div>
-                    </div>
-                </div>
-                <footer>
-                    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-                        <button type="button" pButton icon="fa-check" (click)="login()" label="OK"></button>
-                    </div>
-                </footer>
+                    </footer>
+                </form>
             </p-dialog>
         </div>
               `,
@@ -238,6 +240,8 @@ export class AppComponent implements OnInit {
 
     login() {
         this.articleService.login(this.user, this.password).then(handleLoginResponse(this));
+        this.user = null;
+        this.password = null;
     }
 
     logout() {
